@@ -31,11 +31,11 @@ func (s *omsOderService) Limit123o(ctx context.Context, start, end int) (res []*
 	return res, err
 }
 
-func (s *omsOderService) Limit123od(ctx context.Context, oms *model.OrderLimitCha) ([]model.OmsOrder, error) {
+func (s *omsOderService) Limit123od(ctx context.Context, oms *model.OrderLimitCha) ([]model.OmsOrder, error, int) {
 
 	db, err := gdb.Instance()
 	if err != nil {
-		return nil, gerror.New("数据库连接失败")
+		return nil, gerror.New("数据库连接失败"), 0
 	}
 	omsOrder := db.Table("oms_order")
 	fmt.Println("fsfsfsaf:", oms.Status)
@@ -56,11 +56,14 @@ func (s *omsOderService) Limit123od(ctx context.Context, oms *model.OrderLimitCh
 		}
 	}
 	var result []model.OmsOrder
+	var count int
+	count, _ = omsOrder.Limit((oms.Page-1)*oms.Num, oms.Num).Count()
+	fmt.Println(count)
 	omsOrder.Limit((oms.Page-1)*oms.Num, oms.Num).FindAll()
 	omsOrder.Structs(&result)
 	//res, err = dao.OmsOrder.Limit(start*end, end).FindAll()
 	//res, err = dao.User.Limitya(start1,end1)
-	return result, err
+	return result, err, count
 }
 
 func (s *omsOderService) Cha1(ctx context.Context, oms *model.OrderLimitCha) ([]model.OmsOrder, error) {

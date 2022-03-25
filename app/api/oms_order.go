@@ -77,18 +77,18 @@ func (a *authOmsOrderApi) OrderAll2(r *ghttp.Request) {
 		response.JsonExit(r, 1, err.Error())
 	}
 
-	var res []model.OmsOrder
+	//var res []model.OmsOrder
 
-	res, _ = service.OmsOrder.Cha1(r.Context(), data)
+	//res, _ = service.OmsOrder.Cha1(r.Context(), data)
 	//service.OmsOrder.Limit123o(r.Context(), data.Page, data.Num)
 	var sum int
-	sum = len(res)
+	//sum = len(res)
 
-	fmt.Println(sum)
+	//fmt.Println(sum)
 
 	var i int
 	var res1 []model.OmsOrder
-	res1, _ = service.OmsOrder.Limit123od(r.Context(), data)
+	res1, _, sum = service.OmsOrder.Limit123od(r.Context(), data)
 	//fmt.Println(res1)
 	var u model.OrderLimitCha1
 

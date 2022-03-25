@@ -29,6 +29,7 @@ func init() {
 			service.Middleware.Ctx,
 			service.Middleware.CORS,
 		)
+
 		group.GET("/test", api.AuthUser.Test)
 		group.GET("/order", api.AuthOmsOrder.OrderAll)
 		group.GET("/order1", api.AuthOmsOrder.OrderAll1)

@@ -4,7 +4,6 @@ import (
 	"ceshi1/app/model"
 	"ceshi1/app/service"
 	"ceshi1/library/response"
-	"fmt"
 	"github.com/gogf/gf/net/ghttp"
 )
 
@@ -33,18 +32,17 @@ func (a *orderUserApi) OrderUserLimit(r *ghttp.Request) {
 		response.JsonExit(r, 1, err.Error())
 	}
 
-	var res []model.OrderUser
-
-	res, _ = service.OrderUser.ChaOrderUserAll(r.Context(), data)
+	//var res []model.OrderUser
+	//
+	//res, _ = service.OrderUser.ChaOrderUserAll(r.Context(), data)
 
 	var sum int
-	sum = len(res)
-
-	fmt.Println(sum)
+	//sum = len(res)
+	//fmt.Println(sum)
 
 	var i int
 	var res1 []model.OrderUser
-	res1, _ = service.OrderUser.LimitOrderUser(r.Context(), data)
+	res1, _, sum = service.OrderUser.LimitOrderUser(r.Context(), data)
 	//fmt.Println(res1)
 	var u model.OrderAndUserLimit
 

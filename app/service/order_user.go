@@ -30,11 +30,11 @@ func (s *OrderUserService) ChaOrderUser() (res []model.OrderUser, err error) {
 	return result, nil
 }
 
-func (s *OrderUserService) LimitOrderUser(ctx context.Context, oms *model.OrderAndUserLimitAll) ([]model.OrderUser, error) {
+func (s *OrderUserService) LimitOrderUser(ctx context.Context, oms *model.OrderAndUserLimitAll) ([]model.OrderUser, error, int) {
 
 	db, err := gdb.Instance()
 	if err != nil {
-		return nil, gerror.New("数据库连接失败")
+		return nil, gerror.New("数据库连接失败"), 0
 	}
 	orderAndUser := db.Model("oms_order o").LeftJoin("users u", "o.member_id=u.id").Fields("o.*,u.mobile,u.nickname")
 	fmt.Println("fsfsfsaf:", oms.Status)
@@ -55,11 +55,15 @@ func (s *OrderUserService) LimitOrderUser(ctx context.Context, oms *model.OrderA
 		}
 	}
 	var result []model.OrderUser
+
+	var count int
+	count, _ = orderAndUser.Limit((oms.Page-1)*oms.Num, oms.Num).Count()
+
 	orderAndUser.Limit((oms.Page-1)*oms.Num, oms.Num).FindAll()
 	orderAndUser.Structs(&result)
 	//res, err = dao.OmsOrder.Limit(start*end, end).FindAll()
 	//res, err = dao.User.Limitya(start1,end1)
-	return result, err
+	return result, err, count
 }
 
 func (s *OrderUserService) ChaOrderUserAll(ctx context.Context, oms *model.OrderAndUserLimitAll) ([]model.OrderUser, error) {
